@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -53,8 +56,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -68,6 +76,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.2'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'androidx.room:room-runtime:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

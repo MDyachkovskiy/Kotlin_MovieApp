@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="MovieNames">
-        <item> 2001 год: Космическая одиссея  </item>
-        <item> Чужой </item>
-        <item> Всё о Еве </item>
-        <item> Амадей </item>
-        <item> Амели </item>
-        <item> Апокалипсис сегодня </item>
-        <item> Аватар </item>
 
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
     </string-array>
 
-    <string-array name="MoviePosters">
-        <item> @drawable/movie_1</item>
-        <item> @drawable/movie_2</item>
-        <item> @drawable/movie_3</item>
-        <item> @drawable/movie_4</item>
-        <item> @drawable/movie_5</item>
-        <item> @drawable/movie_6</item>
-        <item> @drawable/movie_7</item>
-
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
     </string-array>
-
 </resources>

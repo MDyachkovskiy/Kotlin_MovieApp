@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="4dp">
+
+    <View
+        android:id="@+id/supporter"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        app:layout_constraintTop_toBottomOf="@id/poster"/>
+
+    <View
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/background_search_movie"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/movieTitle" />
+
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/poster"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="4dp" />
+
+    <TextView
+        android:id="@+id/movieTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:includeFontPadding="false"
+        android:paddingTop="4dp"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toTopOf="@id/poster" />
+
+    <TextView
+        android:id="@+id/movieDescription"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:includeFontPadding="false"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:lines="3"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/movieTitle"
+        app:layout_constraintBottom_toTopOf="@id/dateInfo"/>
+
+    <LinearLayout
+        android:id="@+id/dateInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/movieDescription"
+        app:layout_constraintBottom_toTopOf="@id/userNoteTitle">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/viewingDate"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/userNoteTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:includeFontPadding="false"
+        android:textSize="13sp"
+        android:text="@string/userComments"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/dateInfo"
+        app:layout_constraintBottom_toTopOf="@id/userNote"/>
+
+    <TextView
+        android:id="@+id/userNote"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:includeFontPadding="false"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:lines="3"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/userNoteTitle"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
