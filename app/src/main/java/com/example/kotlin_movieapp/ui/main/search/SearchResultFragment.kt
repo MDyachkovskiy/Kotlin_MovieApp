@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlin_movieapp.adapters.SearchMovieAdapter
 import com.example.kotlin_movieapp.databinding.FragmentSearchResultBinding
 import com.example.kotlin_movieapp.model.collectionResponse.SearchResponse
-import com.example.kotlin_movieapp.ui.main.AppState
+import com.example.kotlin_movieapp.ui.main.AppState.AppState
+import com.example.kotlin_movieapp.ui.main.AppState.AppStateRenderer
+import com.example.kotlin_movieapp.utils.init
 
 class SearchResultFragment (
     val appState: AppState
@@ -17,6 +19,11 @@ class SearchResultFragment (
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var parentView: View
+
+    private val dataRenderer by lazy {
+        AppStateRenderer(parentView) {} }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,20 +38,15 @@ class SearchResultFragment (
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        renderData(appState)
+        parentView = binding.searchResultFragment
 
+        renderData(appState)
     }
 
     private fun renderData(appState : AppState) {
+        dataRenderer.render(appState)
         when (appState) {
-            is AppState.Error -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-            }
-            AppState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-            }
             is AppState.SuccessSearch -> {
-                binding.loadingLayout.visibility = View.GONE
                 initRV(appState.movieData)
             }
             else -> {return}
@@ -53,19 +55,11 @@ class SearchResultFragment (
 
     private fun initRV(movieData: SearchResponse) {
         val movieList = movieData.searchResults
-
-        binding.searchRecyclerView.apply {
-            adapter = SearchMovieAdapter(movieList)
-            layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.VERTICAL,
-                false)
-        }
+        binding.searchRecyclerView.init(SearchMovieAdapter(movieList), LinearLayoutManager.VERTICAL)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 }

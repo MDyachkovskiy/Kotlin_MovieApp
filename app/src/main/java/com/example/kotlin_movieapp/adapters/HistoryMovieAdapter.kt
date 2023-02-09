@@ -1,17 +1,15 @@
 package com.example.kotlin_movieapp.adapters
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_movieapp.ui.main.MainActivity
-import com.example.kotlin_movieapp.R
 import com.example.kotlin_movieapp.databinding.ItemHistoryMovieBinding
 import com.example.kotlin_movieapp.model.room.history.HistoryMovieItem
 import com.example.kotlin_movieapp.ui.main.movieDetails.MovieDetailsFragment
 import com.example.kotlin_movieapp.utils.KEY_BUNDLE_MOVIE
 import com.example.kotlin_movieapp.utils.convertHistoryMovieItemToCollectionItem
+import com.example.kotlin_movieapp.utils.openDetailsFragment
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -51,16 +49,11 @@ class HistoryMovieAdapter(
                 userNote.text = movie.userNote
 
                 root.setOnClickListener {
-                    (itemView.context as MainActivity).supportFragmentManager
-                        .beginTransaction()
-                        .addToBackStack("tag")
-                        .add(R.id.main_container,
-                            MovieDetailsFragment.newInstance(Bundle().apply {
-                                putParcelable(KEY_BUNDLE_MOVIE,
-                                    convertHistoryMovieItemToCollectionItem(movie))
-                            }))
-                        .commit()
-                }
+                    it.openDetailsFragment(
+                        MovieDetailsFragment::class.java,
+                        KEY_BUNDLE_MOVIE,
+                        convertHistoryMovieItemToCollectionItem(movie)
+                    )}
             }
         }
     }

@@ -7,17 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.kotlin_movieapp.R
+import com.example.kotlin_movieapp.adapters.PersonsAdapter
 import com.example.kotlin_movieapp.databinding.FragmentMovieDetailBinding
 import com.example.kotlin_movieapp.model.collectionResponse.CollectionItem
 import com.example.kotlin_movieapp.model.movieDetailsResponse.MovieDTO
-import com.example.kotlin_movieapp.ui.main.DetailsState
-import com.example.kotlin_movieapp.utils.KEY_BUNDLE_MOVIE
-import com.example.kotlin_movieapp.utils.showSnackBar
-import com.example.kotlin_movieapp.utils.showToast
+import com.example.kotlin_movieapp.model.movieDetailsResponse.Person
+import com.example.kotlin_movieapp.ui.main.AppState.AppStateRenderer
+import com.example.kotlin_movieapp.ui.main.AppState.DetailsState
+import com.example.kotlin_movieapp.utils.*
 
 class MovieDetailsFragment : Fragment() {
 
@@ -27,8 +28,14 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var movieBundle : CollectionItem
     private lateinit var movie : MovieDTO
 
+    private lateinit var parentView: View
+
+    private val dataRenderer by lazy {
+        AppStateRenderer(parentView) { viewModel.getMovieFromRemoteSource(movieBundle.kinopoiskId) }
+    }
+
     private val viewModel: MovieDetailsViewModel by lazy {
-        ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        ViewModelProvider(this)[MovieDetailsViewModel::class.java]
     }
 
     companion object {
@@ -51,8 +58,10 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentView = binding.movieDetail
+
         binding.movieDetail.visibility = View.VISIBLE
-        binding.loadingLayout.visibility = View.VISIBLE
+        binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
 
         binding.userNote.addTextChangedListener (object : TextWatcher{
             override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -67,10 +76,9 @@ class MovieDetailsFragment : Fragment() {
               }.start()
 
             }
-
         })
 
-        binding.favorite.setOnCheckedChangeListener{ checkBox, isChecked ->
+        binding.favorite.setOnCheckedChangeListener{ _, isChecked ->
             if (isChecked) {
                 Thread {
                     saveFavoriteMovie(movie)
@@ -86,9 +94,9 @@ class MovieDetailsFragment : Fragment() {
 
         movieBundle = arguments?.getParcelable(KEY_BUNDLE_MOVIE) ?: CollectionItem()
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer{
-               renderData(it)
-        })
+        viewModel.getLiveData().observe(viewLifecycleOwner) {
+            renderData(it)
+        }
 
         requestMovieDetail(movieBundle.kinopoiskId)
     }
@@ -98,31 +106,14 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun renderData(appState: DetailsState) {
+        dataRenderer.render(appState)
+
         when (appState) {
-            is DetailsState.Error -> {
-                binding.loadingLayout.visibility = View.GONE
-                binding.movieDetail.showSnackBar(
-                    getString(R.string.data_loading_error),
-                    getString(R.string.reload),
-                    {
-                        viewModel.getMovieFromRemoteSource(movieBundle.kinopoiskId)
-                    },
-                    0)
-            }
-
-            is DetailsState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-            }
-
-            is DetailsState.Success -> {
-                binding.movieDetail.visibility = View.VISIBLE
-                binding.loadingLayout.visibility = View.GONE
+            is DetailsState.SuccessMovie -> {
                 movie = appState.movieDTO
                 displayMovie(appState.movieDTO)
-                binding.movieDetail.showSnackBar(
-                    getString(R.string.data_loading_success),
-                    0)
             }
+            else -> return
         }
     }
 
@@ -134,8 +125,6 @@ class MovieDetailsFragment : Fragment() {
         }.start()
 
         with(binding) {
-            movieDetail.visibility = View.VISIBLE
-            loadingLayout.visibility = View.GONE
 
             movieDescription.text = movieDTO.description
             movieTitle.text = movieDTO.name
@@ -143,16 +132,31 @@ class MovieDetailsFragment : Fragment() {
             view?.let {
                 Glide.with(it).load(movieDTO.poster?.url).into(moviePoster) }
 
+            initPersonsRecyclerView(movieDTO.persons)
+
             movieReleaseDate.text = movieDTO.year.toString()
             movieLength.text = getString(R.string.movieLength, movieDTO.movieLength.toString())
             movieBudget.text = getString(R.string.movieBudget,
-                movieDTO.budget?.value?.toString(), movieDTO.budget?.currency);
+                movieDTO.budget?.value?.toString(), movieDTO.budget?.currency)
             movieKpRating.text = movieDTO.rating?.kp.toString()
             movieImdbRating.text = movieDTO.rating?.imdb.toString()
 
-            movieGenres.text = movieDTO.genres?.joinToString(", ")
-            movieCountry.text = movieDTO.countries?.joinToString(", ")
+            movieGenres.text = movieDTO.genres?.convert { genre -> genre.name }
+
+            movieCountry.text = movieDTO.countries?.convert {country -> country.name}
         }
+    }
+
+    private fun initPersonsRecyclerView (persons: List <Person>) {
+        val actors = persons.filter {
+            it.enProfession == "actor"
+        }
+        val movieStaff = persons.filter{
+            it.enProfession != "actor"
+        }
+
+        binding.actorsRV.init(PersonsAdapter(actors), LinearLayoutManager.HORIZONTAL)
+        binding.movieStaffRV.init(PersonsAdapter(movieStaff), LinearLayoutManager.HORIZONTAL)
     }
 
     private fun saveMovie(movieDTO: MovieDTO, date: Long) {
@@ -175,5 +179,4 @@ class MovieDetailsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

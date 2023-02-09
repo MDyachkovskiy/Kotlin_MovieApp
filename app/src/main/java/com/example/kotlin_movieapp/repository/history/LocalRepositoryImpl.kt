@@ -11,7 +11,7 @@ class LocalRepositoryImpl (
         ) : LocalRepository {
 
     override fun getAllHistory(): List<HistoryMovieItem> {
-        return convertListHistoryEntitytoMovie(localDataSource.all())
+        return convertListHistoryEntityToMovie(localDataSource.all())
     }
 
     override fun saveEntity(movie: MovieDTO, date: Long) {

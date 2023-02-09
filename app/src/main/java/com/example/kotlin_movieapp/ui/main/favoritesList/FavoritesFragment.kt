@@ -5,21 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlin_movieapp.adapters.FavoriteMovieAdapter
 import com.example.kotlin_movieapp.databinding.FragmentFavoritesBinding
 import com.example.kotlin_movieapp.model.room.favorites.FavoriteMovieItem
-import com.example.kotlin_movieapp.ui.main.AppState
+import com.example.kotlin_movieapp.ui.main.AppState.AppState
+import com.example.kotlin_movieapp.ui.main.AppState.AppStateRenderer
+import com.example.kotlin_movieapp.utils.init
 
 class FavoritesFragment : Fragment() {
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var parentView: View
+
+    private val dataRenderer by lazy {
+        AppStateRenderer(parentView) {viewModel.getAllFavorites()}
+    }
+
     private val viewModel: FavoritesViewModel by lazy {
-        ViewModelProvider (this).get (FavoritesViewModel::class.java)
+        ViewModelProvider (this)[FavoritesViewModel::class.java]
     }
 
     companion object {
@@ -39,27 +46,25 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.loadingLayout.visibility = View.VISIBLE
+        parentView = binding.favoritesFragment
+
+        binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
 
         Thread {
             viewModel.getAllFavorites()
         }.start()
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer {
+        viewModel.getLiveData().observe(viewLifecycleOwner) {
             renderData(it)
-        })
+        }
     }
 
     private fun renderData(appState : AppState) {
+
+        dataRenderer.render(appState)
+
         when (appState) {
-            is AppState.Error -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-            }
-            AppState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-            }
             is AppState.SuccessFavorites -> {
-                binding.loadingLayout.visibility = View.GONE
                 initRV(appState.movieData)
             }
             else -> {return}
@@ -67,19 +72,11 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initRV(movieData: List<FavoriteMovieItem>) {
-
-        binding.recyclerView.apply {
-            adapter = FavoriteMovieAdapter(movieData)
-            layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.VERTICAL,
-                false)
-        }
+        binding.recyclerView.init(FavoriteMovieAdapter(movieData), LinearLayoutManager.VERTICAL)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 }

@@ -1,4 +1,4 @@
-package com.example.kotlin_movieapp.ui.main
+package com.example.kotlin_movieapp.ui.main.AppState
 
 import com.example.kotlin_movieapp.model.collectionResponse.SearchResponse
 import com.example.kotlin_movieapp.model.collectionResponse.Top250Response

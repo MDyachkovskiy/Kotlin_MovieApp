@@ -15,6 +15,7 @@ data class MovieDTO(
     val type: String?,
     val movieLength: Int?,
     val name: String?,
+    val persons: List<Person>,
     val poster: Poster?,
     val rating: Rating?,
     val similarMovies: List<SimilarMovy>?,

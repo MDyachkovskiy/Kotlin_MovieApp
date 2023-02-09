@@ -10,7 +10,7 @@ class FavoritesRepositoryImpl (
         ) : FavoritesRepository {
 
     override fun getAllFavorites(): List<FavoriteMovieItem> {
-        return convertListFavoritesEntitytoMovie(localDataSource.all())
+        return convertListFavoritesEntityToMovie(localDataSource.all())
     }
 
     override fun saveEntity(movie: MovieDTO) {

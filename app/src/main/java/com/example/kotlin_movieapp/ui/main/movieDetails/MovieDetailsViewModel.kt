@@ -10,7 +10,7 @@ import com.example.kotlin_movieapp.repository.movieDetails.DetailsRepositoryImpl
 import com.example.kotlin_movieapp.repository.RemoteDataSource
 import com.example.kotlin_movieapp.repository.favorites.FavoritesRepositoryImpl
 import com.example.kotlin_movieapp.repository.history.LocalRepositoryImpl
-import com.example.kotlin_movieapp.ui.main.DetailsState
+import com.example.kotlin_movieapp.ui.main.AppState.DetailsState
 
 private const val SERVER_ERROR = "Ошибка сервера"
 private const val REQUEST_ERROR = "Ошибка запроса на сервер"
@@ -44,12 +44,12 @@ class MovieDetailsViewModel(
         }
     }
 
-    private fun checkResponse (serverResponse: MovieDTO) : DetailsState{
+    private fun checkResponse (serverResponse: MovieDTO) : DetailsState {
 
         return if (serverResponse == null) {
             DetailsState.Error(Throwable(CORRUPTED_DATA))
         } else {
-            DetailsState.Success(serverResponse)
+            DetailsState.SuccessMovie(serverResponse)
         }
     }
 

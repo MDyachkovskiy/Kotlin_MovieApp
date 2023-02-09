@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_movieapp.App
 import com.example.kotlin_movieapp.repository.history.LocalRepositoryImpl
-import com.example.kotlin_movieapp.ui.main.AppState
+import com.example.kotlin_movieapp.ui.main.AppState.AppState
 
 private const val SERVER_ERROR = "Ошибка сервера"
 private const val REQUEST_ERROR = "Ошибка запроса на сервер"

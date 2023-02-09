@@ -1,21 +1,16 @@
 package com.example.kotlin_movieapp.adapters
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_movieapp.databinding.ItemContactsBinding
 import com.example.kotlin_movieapp.model.room.contacts.ContactsItem
-
-const val REQUEST_CODE = 23
+import com.example.kotlin_movieapp.utils.checkPermission
 
 class ContactsAdapter (
     private var contactsData: List<ContactsItem>,
@@ -47,12 +42,12 @@ class ContactsAdapter (
                 contactPhoneNumber.text = contact.phoneNumber
 
                 call.setOnClickListener {
-                    checkPermission(contactPhoneNumber.text.toString(), activity)
+                    if (checkPermission(Manifest.permission.CALL_PHONE, activity, itemView)) {
+                        makePhoneCall(contactPhoneNumber.text.toString())
+                    }
                 }
             }
         }
-
-
 
         private fun makePhoneCall(phoneNumber : String) {
             if (phoneNumber.isNotEmpty()){
@@ -61,50 +56,5 @@ class ContactsAdapter (
                 itemView.context.startActivity(callIntent)
             }
         }
-
-        private fun checkPermission(phoneNumber : String, activity: FragmentActivity?) {
-           itemView.context?.let {
-               if (activity != null) {
-                   when {
-                       ContextCompat.checkSelfPermission(it, Manifest.permission.CALL_PHONE)
-                               == PackageManager.PERMISSION_GRANTED -> {
-                           makePhoneCall(phoneNumber)
-                       }
-
-                       shouldShowRequestPermissionRationale(activity,
-                           Manifest.permission.CALL_PHONE) -> {
-                           showAlertMessage(activity)
-                       }
-                       else -> {
-                           requestPermission(activity)
-                       }
-                   }
-               }
-           }
-        }
-
-        private fun showAlertMessage(activity: FragmentActivity?) {
-            itemView.context.let {
-                AlertDialog.Builder(it)
-                    .setTitle("Доступ к звонкам")
-                    .setMessage("Для осуществления звонков необходимо предоставить доступ")
-                    .setPositiveButton("Предоставить доступ") { _, _ ->
-                        requestPermission(activity)
-                    }
-                    .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
-                    .create()
-                    .show()
-            }
-        }
-
-        private fun requestPermission(activity: FragmentActivity?) {
-            activity?.let {
-                requestPermissions(it,
-                    arrayOf(Manifest.permission.CALL_PHONE),
-                    REQUEST_CODE)
-            }
-        }
-
-
     }
 }

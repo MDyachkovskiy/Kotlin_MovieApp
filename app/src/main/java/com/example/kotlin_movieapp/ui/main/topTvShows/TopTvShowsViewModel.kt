@@ -7,7 +7,7 @@ import com.example.kotlin_movieapp.model.collectionResponse.TopTvShowsResponse
 import com.example.kotlin_movieapp.repository.collections.CollectionsRepository
 import com.example.kotlin_movieapp.repository.collections.CollectionsRepositoryImpl
 import com.example.kotlin_movieapp.repository.RemoteDataSource
-import com.example.kotlin_movieapp.ui.main.AppState
+import com.example.kotlin_movieapp.ui.main.AppState.AppState
 import retrofit2.Call
 import retrofit2.Response
 

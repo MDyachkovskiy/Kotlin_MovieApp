@@ -3,13 +3,13 @@ package com.example.kotlin_movieapp.ui.main.search
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.example.kotlin_movieapp.R
 import com.example.kotlin_movieapp.databinding.FragmentSearchBinding
 import com.example.kotlin_movieapp.ui.main.contacts.ContactsFragment
 import com.example.kotlin_movieapp.ui.main.history.HistoryFragment
+import com.example.kotlin_movieapp.utils.replaceFragment
 import java.util.regex.Pattern
 
 class SearchFragment : Fragment() {
@@ -34,18 +34,15 @@ class SearchFragment : Fragment() {
     }
 
     private val viewModel: SearchViewModel by lazy {
-        ViewModelProvider(this).get(SearchViewModel::class.java)
+        ViewModelProvider(this)[SearchViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getData().observe(viewLifecycleOwner, Observer {
-            childFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, SearchResultFragment(it))
-                .commit()
-        })
+        viewModel.getData().observe(viewLifecycleOwner) {
+            childFragmentManager.replaceFragment(R.id.container, SearchResultFragment(it))
+        }
 
         binding.searchView.setOnQueryTextListener(object
             : androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -83,22 +80,12 @@ class SearchFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_history -> {
-                childFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, HistoryFragment.newInstance())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
+                childFragmentManager.replaceFragment(R.id.container, HistoryFragment.newInstance())
                 true
             }
 
             R.id.menu_get_contacts -> {
-                childFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, ContactsFragment.newInstance())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
+                childFragmentManager.replaceFragment(R.id.container, ContactsFragment.newInstance())
                 true
             }
             else -> {
@@ -113,7 +100,6 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 }
