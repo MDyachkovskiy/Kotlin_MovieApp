@@ -10,7 +10,7 @@
     <string name="data_loading_error">Ошибка загрузки данных</string>
     <string name="data_loading_success">Данные успешно загружены</string>
 
-    <!-- Описание деталей фильма -->
+    <!-- MovieDetailsFragment -->
     <string name="releaseDate">Год выхода: </string>
     <string name="genre">Жанр:</string>
     <string name="movie_length">Продолжительность фильма:</string>
@@ -18,17 +18,23 @@
     <string name="movie_budget">Бюджет фильма:</string>
     <string name="movie_KP_rating">Оценка Кинопоиска:</string>
     <string name="movie_IMDB_rating">Оценка IMDB:</string>
+    <string name="actors">Актеры</string>
+    <string name="movieStaff">Съемочная группа</string>
+    <!-- MovieDetailsFragment Titles -->
+    <string name="userNoteTitle">Добавьте свой комментарий</string>
+    <string name="userCommentHint">Оставьте здесь свой комментарий по фильму</string>
 
-    <!-- объединение строк в коде -->
+    <!-- Объединение строк в коде -->
     <string name="movieBudget"> %1$s %2$s</string>
     <string name="movieLength"> %1$s мин</string>
     <string name="concDate"> %1$s %2$s</string>
 
-    <!-- отображения текста в приложении -->
+    <!-- Отображения текста в приложении -->
     <string name="critical_error">Произошла непредвиденная ошибка</string>
     <string name="reload">Повторить попытку</string>
+    <string name="notFoundBirthCityGeoposition">Не удалось отобразить точное место рождения</string>
 
-    <!-- меню навигация -->
+    <!-- Меню навигация -->
     <string name="collections">Коллекции</string>
     <string name="favorites">Понравившиеся</string>
     <string name="search">Поиск</string>
@@ -41,19 +47,31 @@
     <string name="adult_content">Взрослый контент</string>
     <string name="searching_rating">Минимальный рейтинг фильма</string>
 
-    <!-- MovieDetailsFragment Titles -->
-    <string name="userNoteTitle">Добавьте свой комментарий</string>
-    <string name="userCommentHint">Оставьте здесь свой комментарий по фильму</string>
-
-    <!-- Fragment Titles -->
+    <!-- SearchChildFragments Titles -->
     <string name="your_search_result">Мы нашли следующие фильмы по вашему запросу</string>
     <string name="history">История ваших просмотров</string>
 
     <!-- HistoryFragment -->
     <string name="userComments">Ваши комментарии по фильму:</string>
     <string name="viewingDate">Дата просмотра:</string>
+
+    <!-- Favorites -->
     <string name="addMovieToFavorite">Фильм добавлен в Понравившиеся</string>
     <string name="deleteMovieFromFavorite">Фильм удален с Понравившихся</string>
+
+    <!-- SearchFragment Menu -->
     <string name="get_contacts">Получить контакты</string>
+
+    <!-- ContentDescription -->
+    <string name="moviePoster">Постер к фильму</string>
+    <string name="actorPhoto">Фото актера</string>
+
+    <!-- PersonDetailsFragment -->
+    <string name="personProfession">Карьера</string>
+    <string name="dateOfBirth">Дата рождения</string>
+    <string name="age">Возраст</string>
+    <string name="placeOfBirth">Место рождения</string>
+
+
 
 </resources>

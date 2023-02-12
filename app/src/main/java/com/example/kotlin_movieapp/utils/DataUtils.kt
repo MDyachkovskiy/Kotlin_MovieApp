@@ -110,3 +110,6 @@ fun convertContactsItemToContactsEntity (contact: ContactsItem):
         name = contact.name,
         phoneNumber = contact.phoneNumber
     )
+
+fun <T> List<T>.convert(getValue: (T) -> String?) = this.joinToString(", "){
+        it -> getValue(it) ?: "" }

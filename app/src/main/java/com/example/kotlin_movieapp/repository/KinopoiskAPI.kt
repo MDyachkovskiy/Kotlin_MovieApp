@@ -6,6 +6,7 @@ import com.example.kotlin_movieapp.model.collectionResponse.Top250Response
 import com.example.kotlin_movieapp.model.collectionResponse.TopTvShowsResponse
 import com.example.kotlin_movieapp.model.collectionResponse.UpComingResponse
 import com.example.kotlin_movieapp.model.movieDetailsResponse.MovieDTO
+import com.example.kotlin_movieapp.model.personDetailsResponse.PersonDTO
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,6 +14,8 @@ import retrofit2.http.Query
 private const val KINOPOISK_TOKEN = BuildConfig.KINOPOISK_API_KEY
 
 private const val MOVIE_END_POINT = "movie?$KINOPOISK_TOKEN&field=id"
+
+private const val PERSON_END_POINT = "person?$KINOPOISK_TOKEN&field=id"
 
 private const val TOP250_END_POINT =
     "movie/?$KINOPOISK_TOKEN" +
@@ -47,6 +50,11 @@ interface KinopoiskAPI {
     fun getMovie(
         @Query("search") id : Int?
     ) : Call<MovieDTO>
+
+    @GET(PERSON_END_POINT)
+    fun getPerson (
+        @Query("search") id : Int?
+    ) : Call<PersonDTO>
 
     @GET(TOP250_END_POINT)
     fun getTop250Collection(

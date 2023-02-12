@@ -18,7 +18,8 @@
             <ImageView
                 android:id="@+id/movie_poster"
                 android:layout_width="match_parent"
-                android:layout_height="500dp" />
+                android:layout_height="500dp"
+                android:contentDescription="@string/moviePoster"/>
 
             <TextView
                 android:id="@+id/movie_title"
@@ -163,6 +164,50 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/actors"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/actors"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/actorsRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/staff"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/movieStaff"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movieStaffRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -233,6 +278,7 @@
                     android:layout_height="150dp"
                     android:inputType="text"
                     android:gravity="top|start"
+                    android:importantForAutofill="no"
                     android:hint="@string/userCommentHint"
                     android:textColorHint="@color/white"
                     android:textColor="@color/white"
